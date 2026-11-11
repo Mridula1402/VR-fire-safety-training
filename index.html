@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>CalmDrill – VR Fire Safety Training</title>
+<title>CalmDrill – VR Fire Safety Training</title><meta name="description" content="Learn fire extinguisher use and evacuation steps, then practise in a comfort-first 3D fire drill.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
 <style>
 :root{--ink:#eef2f3;--bg:#10181c;--panel:rgba(16,24,28,.86);--line:#2f444c;--amber:#ffb23e;--green:#3ddc84;--red:#ff5d4d}
@@ -27,6 +27,24 @@ button.on,button.go{background:var(--amber);color:#1a1200;border-color:var(--amb
 @keyframes b{0%{transform:scale(1)}40%{transform:scale(1.9)}55%{transform:scale(1.9)}100%{transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){#br{animation-duration:20s}}
 @media(max-width:600px){#obj{max-width:200px;font-size:13px}#st{width:140px;font-size:13px}}
+#site{position:fixed;inset:0;z-index:50;overflow-y:auto;scroll-behavior:smooth;background:var(--bg)}
+#site nav{position:sticky;top:0;z-index:2;display:flex;gap:18px;align-items:center;flex-wrap:wrap;padding:10px 20px;background:rgba(16,24,28,.96);border-bottom:1px solid var(--line)}
+#site nav b{margin-right:auto;font-size:19px}#site nav a{color:var(--ink);text-decoration:none;padding:6px 2px}#site nav a:hover{color:var(--amber)}
+#site section,#site footer,.in{max-width:960px;margin:0 auto;padding:44px 20px}
+#home{background:radial-gradient(ellipse at 15% 0,rgba(255,120,30,.3),transparent 60%);padding-top:40px}
+#home h1{font-size:clamp(34px,6vw,62px);line-height:1.04;margin:30px 0 14px;max-width:760px}
+#home p.lead{font-size:19px;max-width:620px;color:#c9d6db}
+#site h2{font-size:28px;margin:0 0 8px}#site h3{margin:0 0 6px;font-size:18px}
+button.big{font-size:18px;padding:14px 24px}
+a.btn{color:var(--ink);margin-left:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:14px}
+.ec{border:1px solid var(--line);border-left:8px solid;border-radius:8px;padding:12px 14px;background:#16232a}.ec h3{display:flex;justify-content:space-between}.dim{opacity:.4}
+.pass{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.pass div{flex:1 1 150px;border:1px solid var(--line);border-radius:8px;padding:10px}
+ol.steps{padding-left:24px}ol.steps li{margin:12px 0;padding-left:4px}
+#qz{border:1px solid var(--line);border-radius:10px;padding:18px;background:#16232a;max-width:640px}
+#qo{display:grid;gap:8px}#qo button{text-align:left}#qo button.right{background:#1f6b45;border-color:var(--green)}#qo button.wrong{background:#7a2b2b;border-color:var(--red)}
+.sos{display:inline-block;border:2px solid var(--amber);border-radius:8px;padding:10px 16px;margin:10px 0}
+#site footer{color:#94a8af;font-size:14px;border-top:1px solid var(--line)}
 </style>
 </head>
 <body>
@@ -36,10 +54,31 @@ button.on,button.go{background:var(--amber);color:#1a1200;border-color:var(--amb
 <div id="toast" class="p"></div>
 <div id="btns" class="p hide">
  <button id="bCrouch">Crouch (C)</button><button id="bL">Turn left (Q)</button><button id="bR">Turn right (E)</button>
- <button id="bBreak">I need a break</button><button id="bPause">Pause (Space)</button><button id="bVR" class="hide">Enter VR</button>
+ <button id="bBreak">I need a break</button><button id="bPause">Pause (Space)</button><button id="bHome">Home</button><button id="bVR" class="hide">Enter VR</button>
 </div>
 <div id="ov"><div class="box p" id="ovbox"></div></div>
 
+<div id="site">
+<nav><b>CalmDrill</b><a href="#home">Home</a><a href="#ext">Extinguishers</a><a href="#evac">Evacuation</a><a href="#quiz">Quiz</a><button class="go" onclick="openDrill()">Start training</button></nav>
+<div id="home"><div class="in">
+ <h1>Learn to escape a fire without panic</h1>
+ <p class="lead">CalmDrill is a VR-ready fire safety course. Learn which extinguisher to use, how to evacuate, and then practise in a realistic 3D drill built to avoid motion sickness and overwhelm.</p>
+ <p><button class="go big" onclick="openDrill()">Start training</button><a class="btn" href="#quiz">Test your knowledge</a></p>
+ <div class="pass"><div><h3>Comfort first</h3>Teleport movement, snap turning and a comfort vignette.</div><div><h3>Panic-aware</h3>Stress meter, breathing breaks and automatic intensity lowering.</div><div><h3>Three levels</h3>Gentle, Standard and Realistic fire intensity.</div></div>
+</div></div>
+<section id="ext"><h2>Fire extinguisher guide</h2><p>Pick what is burning. The guide shows which extinguishers are safe to use.</p>
+ <div class="chips" id="exch"><button data-c="A">Paper, wood, cloth</button><button data-c="B">Petrol, paint, solvents</button><button data-c="C">Gas</button><button data-c="E">Live electrical</button><button data-c="F">Cooking oil or fat</button></div>
+ <p id="exn" aria-live="polite"></p><div class="grid" id="exc"></div>
+ <h3 style="margin-top:22px">Using an extinguisher: PASS</h3>
+ <div class="pass"><div><b>Pull</b> the safety pin.</div><div><b>Aim</b> at the base of the fire, not the flames.</div><div><b>Squeeze</b> the handle.</div><div><b>Sweep</b> side to side until the fire is out.</div></div>
+ <p>Fight a fire only if it is small, the alarm is raised and you have an exit behind you. Otherwise, leave.</p></section>
+<section id="evac"><h2>Emergency evacuation steps</h2>
+ <ol class="steps"><li><b>Raise the alarm.</b> Shout and use the nearest alarm point.</li><li><b>Call for help.</b> Dial the fire service as soon as you are safe.</li><li><b>Check doors first.</b> Touch with the back of your hand. If it is hot, do not open it.</li><li><b>Stay low in smoke.</b> Smoke rises, and cleaner air is near the floor.</li><li><b>Close doors behind you.</b> This slows the spread of fire and smoke.</li><li><b>Use stairs, never lifts.</b> Lifts can stop between floors.</li><li><b>Go to the assembly point.</b> Report to the fire warden for a headcount.</li><li><b>Never go back in.</b> Leave rescue to the fire service.</li></ol>
+ <div class="sos">Fire service <b>101</b> &nbsp;|&nbsp; National emergency <b>112</b> (India)</div>
+ <p><button class="go" onclick="openDrill()">Practise these steps in the drill</button></p></section>
+<section id="quiz"><h2>Fire safety quiz</h2><p>Eight questions. You see the reason after each answer.</p><div id="qz"></div></section>
+<footer>CalmDrill. Built by Mridula P (1EP24CS090). A teaching prototype; it does not replace an official fire safety course.</footer>
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 const $=id=>document.getElementById(id),cl=THREE.MathUtils.clamp;
@@ -96,9 +135,9 @@ function menu(){S.state='menu';$('obj').classList.add('hide');$('st').classList.
  <h2>How intense should the fire be?</h2><div class="chips" data-k="lvl"><button data-v="0" class="on">Gentle</button><button data-v="1">Standard</button><button data-v="2">Realistic</button></div>
  <h2>Voice guide</h2><div class="chips" data-k="voice"><button data-v="1" class="on">On</button><button data-v="0">Off</button></div>
  <h2>Good to know</h2><p>Drag to look around. Pause any time with Space: nothing is timed while paused. If stress gets too high, the drill stops, guides your breathing, and lowers its own intensity.</p>
- <p><button class="go" id="goBtn">Start the drill</button></p>`);
+ <p><button class="go" id="goBtn">Start the drill</button> <button id="homeBtn">Back to website</button></p>`);
  document.querySelectorAll('.chips[data-k]').forEach(c=>c.onclick=e=>{const b=e.target.closest('button');if(!b)return;c.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');const k=c.dataset.k,v=b.dataset.v;S[k]=k==='move'?v:k==='voice'?v==='1':+v});
- $('goBtn').onclick=start}
+ $('goBtn').onclick=start;$('homeBtn').onclick=showSite}
 function start(){ac=ac||new (window.AudioContext||window.webkitAudioContext)();S.won=false;reset();S.state='run';hideOv();['obj','st','btns'].forEach(i=>$(i).classList.remove('hide'));drawObj();
  $('bL').classList.toggle('hide',false);toast('Fire detected in the west corner. Take a breath. First, find the red alarm on the east wall.')}
 function pause(){if(S.state==='run'){S.state='paused';ov(`<h1>Paused</h1><p>The fire is frozen. Take as long as you need.</p><p><button class="go" id="r1">Resume</button> <button id="r2">Breathing break</button> <button id="r3">Back to menu</button></p>`);$('r1').onclick=resume;$('r2').onclick=()=>calm(false);$('r3').onclick=menu}else if(S.state==='paused')resume()}
@@ -166,8 +205,45 @@ function update(dt){
  if(G.exp>14)return end(false,'You breathed in too much smoke. In a real fire, staying low can save your life.');
  if(p.z<-14&&Math.abs(p.x-8)<2.5)end(true,'You reached the assembly point. Stay there until the fire service says it is safe.');
 }
-R.setAnimationLoop(()=>{const n=performance.now(),dt=Math.min(.05,(n-last)/1000);last=n;update(dt);R.render(scene,cam)});
-rig.position.set(0,0,9);menu();
+R.setAnimationLoop(()=>{const n=performance.now(),dt=Math.min(.05,(n-last)/1000);last=n;if(!siteOn){update(dt);R.render(scene,cam)}});
+rig.position.set(0,0,9);hideOv();
+/* ---------- website ---------- */
+let siteOn=true;
+function openDrill(){siteOn=false;$('site').classList.add('hide');menu()}
+function showSite(){siteOn=true;S.state='menu';alarmOff();try{speechSynthesis.cancel()}catch(e){}hideOv();['obj','st','btns'].forEach(i=>$(i).classList.add('hide'));$('site').classList.remove('hide')}
+$('bHome').onclick=showSite;
+const EXT=[
+{n:'Water',c:'#e5484d',ok:'A',use:'Wood, paper, cloth and furniture.',no:'Never on electrical equipment or burning oil and fat.'},
+{n:'Foam',c:'#f1e6c8',ok:'AB',use:'Wood, paper and flammable liquids such as petrol or paint.',no:'Not for live electrical equipment.'},
+{n:'CO₂',c:'#555',ok:'BE',use:'Flammable liquids and electrical equipment. Leaves no residue.',no:'The horn gets very cold, so never grip it. Weak outdoors and on deep-seated fires.'},
+{n:'Dry powder',c:'#2f7de1',ok:'ABCE',use:'General purpose: solids, liquids and gases.',no:'Clouds the air and reduces visibility. Avoid in small closed rooms.'},
+{n:'Wet chemical',c:'#f2c230',ok:'AF',use:'Cooking oil and fat fires in kitchens.',no:'Not for electrical or flammable-liquid fires.'}];
+let sel='';
+const NOTE={C:'Gas fires: do not put the flame out unless the supply can be shut off. Escaping gas can re-ignite and explode. Leave and call 101.',E:'Switch off the power if it is safe to do so. Never use water on live electrical equipment.',F:'Never throw water on a cooking-oil fire. Turn off the heat if safe, and use a wet chemical extinguisher or a fire blanket.'};
+function exRender(){$('exn').textContent=NOTE[sel]||'';
+ $('exc').innerHTML=EXT.map(x=>{const s=sel?(x.ok.includes(sel)?1:-1):0;return `<div class="ec${s<0?' dim':''}" style="border-left-color:${x.c}"><h3>${x.n}${s?`<span class="${s>0?'ok':'no'}">${s>0?'✓ Use':'✗ Do not use'}</span>`:''}</h3><p><b>Best for:</b> ${x.use}</p><p><b>Watch out:</b> ${x.no}</p></div>`}).join('')}
+$('exch').onclick=e=>{const b=e.target.closest('button');if(!b)return;const on=b.classList.contains('on');document.querySelectorAll('#exch button').forEach(x=>x.classList.remove('on'));sel=on?'':b.dataset.c;if(!on)b.classList.add('on');exRender()};
+exRender();
+const QZ=[
+{q:'You discover a fire. What do you do first?',a:['Raise the alarm','Try to put it out alone','Collect your belongings','Open the windows'],e:'Alerting others comes first. Fire doubles in size very quickly.'},
+{q:'A pan of cooking oil is on fire. What should you use?',a:['A wet chemical extinguisher or fire blanket','A bucket of water','A foam extinguisher on full blast','A wet towel flung over the flames'],e:'Water makes burning oil explode into a fireball. Wet chemical cools the oil and seals the surface.'},
+{q:'How do you check a closed door before opening it?',a:['Touch it with the back of your hand','Open it a little and look','Kick it open fast','Listen for crackling only'],e:'If the door is hot, fire is behind it. The back of the hand is more sensitive and will not grip if burned.'},
+{q:'There is smoke in the corridor. What should you do?',a:['Stay low and keep moving','Run upright to save time','Hold your breath and stand still','Wait for the smoke to clear'],e:'Smoke and heat rise, so the cleanest air is near the floor.'},
+{q:'Which is the safe way down from an upper floor in a fire?',a:['The stairs','The lift','A window','Whichever is nearest'],e:'Lifts can stop between floors and fill with smoke. Use stairs.'},
+{q:'In PASS, what does the first P stand for?',a:['Pull the pin','Push the button','Point at the smoke','Prepare to leave'],e:'Pull the pin, Aim at the base, Squeeze the handle, Sweep side to side.'},
+{q:'Which extinguisher is suitable for live electrical equipment?',a:['CO₂','Water','Wet chemical','Foam'],e:'CO₂ does not conduct electricity and leaves no residue. Water and foam can carry current.'},
+{q:'You have reached the assembly point. What next?',a:['Report to the fire warden and stay','Go back for your phone','Walk around the building','Leave without telling anyone'],e:'The warden needs a headcount. Missing people trigger dangerous searches.'}];
+let qi=0,qs=0,qo=[];
+function qReset(){qi=0;qs=0;qShow()}
+function qShow(){const el=$('qz');
+ if(qi>=QZ.length){let best=qs;try{best=Math.max(+localStorage.qbest||0,qs);localStorage.qbest=best}catch(e){}
+  el.innerHTML=`<h3>You scored ${qs} out of ${QZ.length}</h3><p>${qs>=7?'Excellent. You know what to do in a fire.':qs>=5?'Good start. Review the guides above and try again.':'Read the guides above, then retake the quiz.'}</p><p>Best score on this device: ${best} of ${QZ.length}</p><button class="go" onclick="qReset()">Retake quiz</button> <button onclick="openDrill()">Practise in the drill</button>`;return}
+ const Q=QZ[qi];qo=Q.a.map((t,i)=>[t,i===0]).sort(()=>Math.random()-.5);
+ el.innerHTML=`<p>Question ${qi+1} of ${QZ.length}</p><h3>${Q.q}</h3><div id="qo">${qo.map((o,i)=>`<button data-i="${i}">${o[0]}</button>`).join('')}</div><p id="qe" aria-live="polite"></p>`;
+ $('qo').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;const ok=qo[b.dataset.i][1];if(ok)qs++;
+  [...$('qo').children].forEach((x,i)=>{x.disabled=true;if(qo[i][1])x.classList.add('right')});if(!ok)b.classList.add('wrong');
+  $('qe').innerHTML=`<b>${ok?'Correct.':'Not quite.'}</b> ${Q.e}<br><br><button class="go" id="qn">${qi+1<QZ.length?'Next question':'See score'}</button>`;$('qn').onclick=()=>{qi++;qShow()}}}
+qShow();
 </script>
 </body>
 </html>
